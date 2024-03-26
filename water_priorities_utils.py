@@ -1,5 +1,5 @@
 import pickle
-import numpy
+import numpy as np
 import sys
 import os
 import pandas as pd
@@ -29,13 +29,13 @@ def Connectivity(inputfile):
   # (substract the line of the header)
   numelements = len(contents)
 
-  idsistecol = numpy.zeros(numelements, dtype=numpy.int32)
-  fromnode = numpy.zeros(numelements, dtype=numpy.int32)
-  tonode = numpy.zeros(numelements, dtype=numpy.int32)
+  idsistecol = np.zeros(numelements, dtype=np.int32)
+  fromnode = np.zeros(numelements, dtype=np.int32)
+  tonode = np.zeros(numelements, dtype=np.int32)
 
   # the toelement vector does not refer to the system id, but to normal
   # indices of the system's vector
-  toelement = numpy.zeros(numelements, dtype=numpy.int32)
+  toelement = np.zeros(numelements, dtype=np.int32)
   toelement[:] = -1
 
   idsistecol = contents['RCHID'].to_numpy()
@@ -46,7 +46,7 @@ def Connectivity(inputfile):
   # for each element of the network, determine the next element
   # downstream
   for j in range(numelements):
-    tupindex = numpy.where(fromnode == tonode[j])
+    tupindex = np.where(fromnode == tonode[j])
     index = tupindex[0]
     if len(index) > 0:
       # however, if there are more than to elements, it means that
@@ -110,12 +110,12 @@ def TrackUpstream(contents, connectivity):  # new name: connectivity
 
   numelements = len(contents)
 
-  idsistecol = numpy.zeros(numelements, dtype=numpy.int32)
-  microarea = numpy.zeros(numelements, dtype=numpy.float32)
+  idsistecol = np.zeros(numelements, dtype=np.int32)
+  microarea = np.zeros(numelements, dtype=np.float32)
 
   # the toelement vector does not refers to the system id, but to normal
   # indices of the system's vector
-  toelement = numpy.zeros(numelements, dtype=numpy.int32)
+  toelement = np.zeros(numelements, dtype=np.int32)
   toelement[:] = -1
 
   idsistecol = contents['RCHID'].to_numpy()
@@ -207,12 +207,12 @@ def TrackUpstream(contents, connectivity):  # new name: connectivity
   print("=========================================")
 
 
-  BasinArea = numpy.zeros(numelements, dtype=numpy.float32)
+  BasinArea = np.zeros(numelements, dtype=np.float32)
   for j in range(len(idsistecol)):
     accumArea = 0.
     OneNetwork = drainnetwork_sid[j]
     for micro_sid in OneNetwork:
-      tup1 = numpy.where(micro_sid == idsistecol)
+      tup1 = np.where(micro_sid == idsistecol)
       if len(tup1[0]) == 0:
         continue
       elif len(tup1[0]) > 1:
